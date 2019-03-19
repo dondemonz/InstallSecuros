@@ -1,8 +1,7 @@
 from pywinauto.application import Application
-from pywinauto.application import timings
 import time
-import pywinauto
 path = "C:\\Program Files (x86)\\ISS\\SecurOS\\"
+
 
 def test_open_install_file():
     app = Application(backend="uia").start(r'C:\\SecurOSEnterprise_10.2.114_Dev_ISS.exe').connect(title='SecurOS Enterprise - InstallShield Wizard')
@@ -10,6 +9,7 @@ def test_open_install_file():
     dlg.wait('exists')
     dlg.child_window(auto_id="306").select("Русский")
     dlg.OK.click()
+    dlg.Установить.click()
     time.sleep(35)
     app1 = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg1 = app1.window(title='SecurOS Enterprise - InstallShield Wizard')
