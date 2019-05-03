@@ -76,7 +76,16 @@ def test_create_iidk():
     p = l.child_window(class_name="QAction", top_level_only=False).exists()
     print(p)
 
-
+def test_1():
+    app = Application(backend="uia").connect(title='Панель управления SecurOS Enterprise')
+    dlg = app.window(title='Панель управления SecurOS Enterprise')
+    dlg.child_window(auto_id="MainPanelForm.gridLayoutWidget.MainPanelWidget.rightFrame.setupWidget.setupButton").click()
+    dlg.Оповещение.click_input()
+    ef = dlg.Оповещение.MMS.Exists(timeout=1)
+    #elements = dlg.children()
+    #len(elements)
+    # dlg.MMS.exists()
+    # o = object.child
 
     # показывает внутри родительского диалога, а не нужного dlg.ИнтерфейсIIDK.click_input()
     #time.sleep(1)
