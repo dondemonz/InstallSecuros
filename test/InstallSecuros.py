@@ -1,44 +1,50 @@
 from pywinauto.application import Application
 import time
+import os
+keyword = 'SecurOS'
 path = "C:\\Program Files (x86)\\ISS\\SecurOS\\"
 
 
 def test_open_install_file():
-    app = Application(backend="uia").start(r'C:\\SecurOSEnterprise_10.2.114_Dev_ISS.exe').connect(title='SecurOS Enterprise - InstallShield Wizard')
+    for fname in os.listdir('C:\\'):
+        if keyword in fname:
+            fn = fname
+            print(fname, "has the keyword")
+
+    app = Application(backend="uia").start(r'C:\\'+fn).connect(title='SecurOS Enterprise - InstallShield Wizard')  #почему подсвечена fn не знаю, но работает
     dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
     dlg.wait('exists')
     dlg.child_window(auto_id="306").select("Русский")
     dlg.OK.click()
-    dlg.Установить.click()
-    time.sleep(35)
+
+    #app.WindowSpecification.Далее.wait('enabled').click()
+    #OpenDialog = pwa_app.window(best_match=u'Open', class_name='#32770').wait('visible', timeout=20, retry_interval=0.5)
+    #app.wait_for_process_exit(timeout=150)
+    #dlg.wait('visible', timeout=150)
+    #window = pywinauto.timings.WaitUntilPasses(20, 0.5, lambda: app.window_(title=Win))
+    #dlg.Далее.wait('visible', timeout=150)
+
+    time.sleep(150)
     app1 = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg1 = app1.window(title='SecurOS Enterprise - InstallShield Wizard')
-    dlg1.wait('exists')
-    dlg1.Далее.click()
+    dlg1.Далее.wait('visible', timeout=100).click()
     dlg1.Япринимаюусловиялицензионногосоглашения.click()
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Далее.click()
-    time.sleep(1)
+    time.sleep(2)
     dlg1.Установить.click()
-    time.sleep(120)
+    dlg1.Готово.wait('visible', timeout=250)
     dlg1.Готово.click()
 
-
-
-
-def test3():
-    app = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
-    # dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
-    # dlg.Далее.click()
 
 
 def test4_wizard_setup():
@@ -65,6 +71,7 @@ def test4_wizard_setup():
     dlg1.ОК.click()
 
 def test_create_iidk():
+    Application(backend="uia").start(path + "client.exe")
     app = Application(backend="uia").connect(title='Панель управления SecurOS Enterprise')
     dlg = app.window(title='Панель управления SecurOS Enterprise')
     dlg.child_window(auto_id="MainPanelForm.gridLayoutWidget.MainPanelWidget.rightFrame.setupWidget.setupButton").click()
@@ -76,7 +83,7 @@ def test_create_iidk():
     p = l.child_window(class_name="QAction", top_level_only=False).exists()
     print(p)
 
-def test_1():
+def test_2():
     app = Application(backend="uia").connect(title='Панель управления SecurOS Enterprise')
     dlg = app.window(title='Панель управления SecurOS Enterprise')
     dlg.child_window(auto_id="MainPanelForm.gridLayoutWidget.MainPanelWidget.rightFrame.setupWidget.setupButton").click()
