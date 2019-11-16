@@ -71,14 +71,24 @@ def test4_wizard_setup():
     dlg1.ОК.click()
 
 def test_create_iidk():
-    Application(backend="uia").start(path + "client.exe")
+    #Application(backend="uia").start(path + "client.exe")
     app = Application(backend="uia").connect(title='Панель управления SecurOS Enterprise')
     dlg = app.window(title='Панель управления SecurOS Enterprise')
-    dlg.child_window(auto_id="MainPanelForm.gridLayoutWidget.MainPanelWidget.rightFrame.setupWidget.setupButton").click()
-    time.sleep(2)
+    d = dlg.child_window(auto_id="MainPanelForm.gridLayoutWidget.MainPanelWidget.rightFrame.setupWidget.setupButton").click()
     dlg.ИнтеграцияиАвтоматизация.click_input()
-    l = dlg.button2.click_input()
+    time.sleep(1)
+    app.window_().print_control_identifiers()
+    #pywinauto.send_keys('ctrl+N')
+
+    #dlg.ИнтерфейсIIDK.click()
+    #time.sleep(2)
+    #l = dlg.button2.click_input()
     # p = pywinauto.findwindows.find_elements(class_name="QAction")
+    #time.sleep(25)
+
+    #app1.window_().Edit2.type_keys("securos")
+    #app1.window_().Авторизоваться.click()
+    #app1.window().print_control_identifiers()
 
     p = l.child_window(class_name="QAction", top_level_only=False).exists()
     print(p)
