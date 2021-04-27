@@ -153,6 +153,7 @@ def wizard_load_from_json():
     app = Application(backend="uia").connect(title="   Мастер первоначальной настройки")
     dlg1 = app.window(title="   Мастер первоначальной настройки")
     dlg1.Импортироватькофигурационныйфайл.click()
+    dlg1.Восстановить.click()
     dlg1.Далее.click()
     time.sleep(1)
     dlg1.Путькфайлу.click_input()
