@@ -7,3 +7,4 @@ pywinauto
 parse
 pyunpack
 patool
+psutil
