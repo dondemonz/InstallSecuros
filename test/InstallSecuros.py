@@ -24,15 +24,11 @@ def test1():
             time.sleep(5)
             os.remove("C:/builds/" + name)
             time.sleep(5)
-            test_wizard_load_from_json()
+            wizard_load_from_json()
         else:
             print("File doesn't exist")
     else:
         print("Directory doesn't exist")
     return filename
 
-
-
-def test():
-    install_securos(name="SecurOSEnterprise_10.10.19_Dev_ISS.exe")
 

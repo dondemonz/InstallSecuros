@@ -27,7 +27,7 @@ def increment_ver(version):
     version = version.split('.')
     version[2] = str(int(version[2]) + 1)
     return '.'.join(version)
-
+"""
 def test():
     app = Application(backend="uia").start(r"C:/builds/SecurOSEnterprise_10.10.30_Dev_ISS.exe").connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
@@ -36,7 +36,7 @@ def test():
     app = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
     dlg.OK.click()
-
+"""
 def install_securos(name):
     app = Application(backend="uia").start(r"C:/builds/" + name).connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
@@ -147,7 +147,7 @@ def wizard_setup():
     time.sleep(1)
     dlg2.OK.click()
 
-def test_wizard_load_from_json():
+def wizard_load_from_json():
     Application(backend="uia").start(path + "client.exe")
     time.sleep(15)
     app = Application(backend="uia").connect(title="   Мастер первоначальной настройки")
