@@ -8,3 +8,4 @@ parse
 pyunpack
 patool
 psutil
+winapps
