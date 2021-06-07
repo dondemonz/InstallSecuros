@@ -30,5 +30,3 @@ def test1():
     else:
         print("Directory doesn't exist")
     return filename
-
-

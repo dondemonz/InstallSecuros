@@ -6,7 +6,6 @@ from win32api import GetFileVersionInfo, LOWORD, HIWORD
 import win32serviceutil
 import subprocess
 
-
 def get_version_data(filename):
     try:
         info = GetFileVersionInfo(filename, "\\")
@@ -27,28 +26,18 @@ def increment_ver(version):
     version = version.split('.')
     version[2] = str(int(version[2]) + 1)
     return '.'.join(version)
-"""
-def test():
-    app = Application(backend="uia").start(r"C:/builds/SecurOSEnterprise_10.10.30_Dev_ISS.exe").connect(title='SecurOS Enterprise - InstallShield Wizard')
-    dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
-    time.sleep(15)
-    dlg.window(best_match='ComboBox', auto_id="306").select("Русский")
-    app = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
-    dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
-    dlg.OK.click()
-"""
+
 def install_securos(name):
     app = Application(backend="uia").start(r"C:/builds/" + name).connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
     time.sleep(2)
-    #dlg.wait('exists')
+
     #раньше работало так как закомментированно ниже, потом почемуто начало работать через раз
     #dlg.wait('exists')
     #dlg.print_control_identifiers()
     #dlg.child_window(best_match='ComboBox', auto_id="306").select("Русский")
-    dlg.window(best_match='ComboBox', auto_id="306").select("Русский")
-    #app = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
-    #dlg = app.window(title='SecurOS Enterprise - InstallShield Wizard')
+    #dlg.window(best_match='ComboBox', auto_id="306").select("Русский")
+
     dlg.OK.click()
 
     #неудачные попытки обойти sleep и смену окон
@@ -62,10 +51,9 @@ def install_securos(name):
     time.sleep(150)
     app1 = Application(backend="uia").connect(title='SecurOS Enterprise - InstallShield Wizard')
     dlg1 = app1.window(title='SecurOS Enterprise - InstallShield Wizard')
-    time.sleep(10)
+    time.sleep(5)
     dlg1.Далее.click()
-    time.sleep(2)
-    #dlg1.Далее.wait('visible', timeout=100).click()
+    time.sleep(5)
     dlg1.Япринимаюусловиялицензионногосоглашения.click()
     time.sleep(2)
     dlg1.Далее.click()
@@ -82,8 +70,9 @@ def install_securos(name):
     time.sleep(2)
     dlg1.Установить.click()
     #dlg1.Готово.wait('visible', timeout=550)
-    time.sleep(520)
+    time.sleep(620)
     dlg1.Готово.click()
+
 
 def kill_client_exe():
     PROCNAME = "client.exe"
@@ -95,11 +84,11 @@ def kill_client_exe():
 
 
 def stop_securos_service():
-    serviceName = "SecurOS Control Service"
+    serviceName = "Video Management System Server"
     win32serviceutil.StopService(serviceName)
 
 def securos_uninstall():
-    #в папку с тестом, в данном случае C:\Devel\InstallSecuros\test, должен находиться msiexec.exe
+    #в папкe с тестом, в данном случае C:\Devel\InstallSecuros\test, должен находиться msiexec.exe
     winapps.uninstall("SecurOS Enterprise", args=['/quiet'])
 
 def stop_postgres_service():
@@ -109,7 +98,7 @@ def stop_postgres_service():
     except:
         print("Windows service NOT installed")
     else:
-        print("Windows service installed")
+        #print("Windows service installed")
         win32serviceutil.StopService(service_name)
         uninstall_postgres()
         time.sleep(10)
@@ -121,6 +110,27 @@ def uninstall_postgres():
 
 path = "C:\\Program Files (x86)\\ISS\\SecurOS\\"
 
+
+def wizard_load_from_json():
+    time.sleep(1)
+    Application(backend="uia").start(path + "client.exe")
+    time.sleep(15)
+    app = Application(backend="uia").connect(title="   Мастер первоначальной настройки")
+    dlg = app.window(title="   Мастер первоначальной настройки")
+    dlg.Импортироватькофигурационныйфайл.click()
+    dlg.Далее.click()
+    time.sleep(2)
+    dlg['Путь к файлу:Edit'].set_text('C:\\ProgramData\\ISS\\Sys_config\\new_system_with_iidk.json')
+    time.sleep(2)
+    dlg.Далее.click()
+    time.sleep(1)
+    dlg.Восстановить.click()
+    time.sleep(1)
+    dlg.Завершить.click()
+
+
+
+#эта функция использовалась раньше, с чистым конфигом, без iidk, сейчас она не используется
 def wizard_setup():
     Application(backend="uia").start(path + "client.exe")
     time.sleep(15)
@@ -147,21 +157,6 @@ def wizard_setup():
     time.sleep(1)
     dlg2.OK.click()
 
-def wizard_load_from_json():
-    Application(backend="uia").start(path + "client.exe")
-    time.sleep(15)
-    app = Application(backend="uia").connect(title="   Мастер первоначальной настройки")
-    dlg1 = app.window(title="   Мастер первоначальной настройки")
-    dlg1.Импортироватькофигурационныйфайл.click()
-    dlg1.Восстановить.click()
-    dlg1.Далее.click()
-    time.sleep(1)
-    dlg1.Путькфайлу.click_input()
-    dlg1.type_keys('C:\\ProgramData\\ISS\\Sys_config\\new_system_with_iidk.json')
-    time.sleep(1)
-    dlg1.Далее.click()
-    time.sleep(1)
-    dlg1.Завершить.click()
 
 #попытки создать iidk через интерфейс, не получается выбрать конректно объект iidk для создания
     """
@@ -256,35 +251,8 @@ def test_2():
     # item_backup = dlg.child_window(title="Интерфейс IIDK", control_type="MenuItem")
     # item_backup.select()
     #dlg.ИнтерфейсIIDK.click()
-
     # title = 'Создать(Ctrl+N)'
-
-
     # dlg1.click()
 
-
-
-def test55():
-    import win32api
-
-    drives = win32api.GetLogicalDriveStrings()
-    drives = drives.split('\000')[:-1]
-    print(drives)
-    
-def test12():
-    if os.path.exists("Y:/10.10.10"):
-        print("Directory exist")
-    else:
-        print("Directory doesn't exist")
-        
-def test121():
-    dir_list = os.listdir("Y:\\10.10.10\\")
-    print(dir_list)
-
-
-def test121():
-    #dir_list = os.listdir("Y:/10.10.26/")
-    dir_list = os.listdir("//builder/BUILDS/10.10.26/")
-    print(dir_list)
     """
 
