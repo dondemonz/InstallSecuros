@@ -70,7 +70,7 @@ def install_securos(name):
     time.sleep(2)
     dlg1.Установить.click()
     #dlg1.Готово.wait('visible', timeout=550)
-    time.sleep(620)
+    time.sleep(640)
     dlg1.Готово.click()
 
 
