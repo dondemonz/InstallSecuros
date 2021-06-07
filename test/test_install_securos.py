@@ -3,7 +3,7 @@ import shutil
 import os.path
 from model.helper import *
 
-def test1():
+def test_install_securos():
     version = get_version_number()
     new_version = increment_ver(version)
     path_to_file = '//builder/BUILDS/' + new_version + '/'
